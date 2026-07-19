@@ -2,6 +2,14 @@
 
 A dead-simple, cross-platform Pomodoro Timer. Nothing more, nothing less.
 
+## Screenshots
+
+| Work session | In progress |
+| :---: | :---: |
+| <img src="docs/screenshots/timer-work.png" width="320" alt="Work session at 25:00" /> | <img src="docs/screenshots/timer-running.png" width="320" alt="Timer running with progress ring" /> |
+| **Short break** | **Settings** |
+| <img src="docs/screenshots/timer-break.png" width="320" alt="Short break phase" /> | <img src="docs/screenshots/settings.png" width="320" alt="Settings with adjustable durations" /> |
+
 ## Philosophy
 
 This app is intentionally bare-bones. No accounts, no analytics, no cloud sync, no bloat. Just a timer that helps you focus.

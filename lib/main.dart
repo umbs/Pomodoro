@@ -18,15 +18,15 @@ void main() async {
 
   if (_isDesktop) {
     await windowManager.ensureInitialized();
-    const windowOptions = WindowOptions(
-      size: Size(400, 720),
-      center: true,
-      title: 'Pomodoro',
-    );
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.show();
-      await windowManager.focus();
-    });
+    // Configure and show the window directly rather than via
+    // waitUntilReadyToShow: its ready callback does not fire reliably under
+    // Flutter's merged UI/platform-thread mode on macOS, which would leave the
+    // window hidden at launch.
+    await windowManager.setTitle('Pomodoro');
+    await windowManager.setSize(const Size(400, 720));
+    await windowManager.center();
+    await windowManager.show();
+    await windowManager.focus();
   }
 
   final timerProvider = TimerProvider();
