@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/timer_state.dart';
 import '../providers/timer_provider.dart';
@@ -12,6 +13,21 @@ class TimerScreen extends StatefulWidget {
 
 class _TimerScreenState extends State<TimerScreen> {
   bool _showSettings = false;
+  late final TextEditingController _titleController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(
+      text: context.read<TimerProvider>().sessionTitle,
+    );
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
 
   String _phaseLabel(TimerPhase phase) {
     switch (phase) {
@@ -55,6 +71,11 @@ class _TimerScreenState extends State<TimerScreen> {
                                   child: _PhaseIndicator(phase: timer.phase),
                                 ),
                               ),
+                            ),
+                            const SizedBox(height: 24),
+                            _SessionTitleField(
+                              controller: _titleController,
+                              onChanged: timer.setSessionTitle,
                             ),
                             const SizedBox(height: 24),
                             _TimerDisplay(
@@ -151,6 +172,45 @@ class _PhaseIndicator extends StatelessWidget {
       case TimerPhase.longBreak:
         return 'Long Break';
     }
+  }
+}
+
+class _SessionTitleField extends StatelessWidget {
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+  const _SessionTitleField({required this.controller, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: TextField(
+        controller: controller,
+        onChanged: onChanged,
+        textAlign: TextAlign.center,
+        maxLines: 1,
+        textInputAction: TextInputAction.done,
+        cursorColor: const Color(0xFFE94560),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(kMaxSessionTitleLength),
+        ],
+        style: const TextStyle(
+          fontFamily: 'Poppins',
+          color: Colors.white,
+          fontSize: 16,
+        ),
+        decoration: const InputDecoration(
+          isDense: true,
+          border: InputBorder.none,
+          hintText: 'What are you working on?',
+          hintStyle: TextStyle(
+            fontFamily: 'Poppins',
+            color: Colors.white38,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
   }
 }
 
